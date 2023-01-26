@@ -1,11 +1,11 @@
 terraform {
   required_providers {
     aws = {
-      source  = "hashicorp/aws"
+      source  = "terraform-registry.apps.internal/hashicorp/aws"
       version = "~> 3.63"
     }
     template = {
-      source = "hashicorp/template"
+      source = "terraform-registry.apps.internal/hashicorp/template"
     }
   }
   required_version = "~> 1.1"

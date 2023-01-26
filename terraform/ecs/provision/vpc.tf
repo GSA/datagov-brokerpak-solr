@@ -3,7 +3,7 @@ data "aws_availability_zones" "available" {
 }
 
 module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
+  source  = "terraform-registry.apps.internal/terraform-aws-modules/vpc/aws"
   version = "3.11.4"
   name    = "solr-${var.instance_name}-vpc"
   cidr    = "10.31.0.0/16"
