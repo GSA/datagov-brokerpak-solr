@@ -76,6 +76,12 @@ variable "solrFollowerCount" {
   default     = 0
 }
 
+variable "solrFollowerLbWeight" {
+  type        = list
+  description = "How to distribute traffic load to each follower in percentage"
+  default     = [100]
+}
+
 variable "solrFollowerDiskSize" {
   type        = number
   description = "How much ephemeral storage disk space Solr Followers will have"

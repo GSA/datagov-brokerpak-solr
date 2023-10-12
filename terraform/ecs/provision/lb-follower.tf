@@ -54,6 +54,55 @@ resource "aws_lb_listener" "https_response-follower" {
   }
 }
 
+resource "aws_lb_listener_rule" "follower-weighted-rule" {
+  # we dont need this rule if we only have 1 follower
+  count        = var.solrFollowerCount < 2 ? 0 : 1
+  listener_arn = aws_lb_listener.https_response-follower[count.index].arn
+  priority     = 99
+
+  action {
+    type = "forward"
+    forward {
+      # Need a dummy stickiness to avoid validation error
+      stickiness {
+        enabled  = false
+        duration = 1
+      }
+
+      # Hard code first two target_group to pass validation
+      target_group {
+        arn    = aws_lb_target_group.solr-follower-individual-target[0].id
+        weight = length(var.solrFollowerLbWeight) > 0 ? var.solrFollowerLbWeight[0] : 100
+      }
+
+      target_group {
+        arn    = aws_lb_target_group.solr-follower-individual-target[1].id
+        weight = length(var.solrFollowerLbWeight) > 1 ? var.solrFollowerLbWeight[1] : 0
+      }
+
+      # Add the rest of the target_group, excluding first two
+      dynamic "target_group" {
+        for_each = tolist(setsubtract(
+          aws_lb_target_group.solr-follower-individual-target,
+          [aws_lb_target_group.solr-follower-individual-target[0], aws_lb_target_group.solr-follower-individual-target[1]]))
+        content {
+          arn    = target_group.value.id
+          # start to use the 3rd and beyond weight, if there are more than 2 elements in the solrFollowerLbWeight list
+          # use 0 for target groups without corrrsponding weight
+          weight = length(var.solrFollowerLbWeight) > (target_group.key + 2) ? var.solrFollowerLbWeight[target_group.key + 2] : 0
+        }
+      }
+    }
+  }
+
+  # need to add a dummy condition to avoid validation error
+  condition {
+    path_pattern {
+      values = ["*"]
+    }
+  }
+}
+
 resource "aws_lb_target_group" "solr-follower-target" {
   count       = var.solrFollowerCount == 0 ? 0 : 1
   name        = "${local.lb_name}-follower-tg"

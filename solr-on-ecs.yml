@@ -63,6 +63,10 @@ provision:
     required: false
     type: number
     details: "How many Solr Followers should be created"
+  - field_name: solrFollowerLbWeight
+    required: false
+    type: array
+    details: "How to distribute traffic load to each follower"
   - field_name: solrFollowerCpu
     required: false
     type: number
@@ -150,6 +154,10 @@ provision:
     default: 0
     overwrite: false
     type: number
+  - name: solrFollowerLbWeight
+    default: [1,1,1,1]
+    overwrite: false
+    type: array
   - name: solrFollowerDiskSize
     default: 50
     overwrite: false

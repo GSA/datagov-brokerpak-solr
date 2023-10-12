@@ -27,7 +27,7 @@ jobs:
 
     steps:
     - name: Create KinD cluster
-      uses: helm/kind-action@v1.4.0
+      uses: helm/kind-action@v1.8.0
 
     - name: Check out repository
       uses: actions/checkout@v3
