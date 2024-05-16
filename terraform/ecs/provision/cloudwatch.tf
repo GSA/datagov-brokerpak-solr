@@ -14,13 +14,13 @@ resource "aws_lambda_permission" "solr_restarts_with_sns" {
 resource "aws_cloudwatch_metric_alarm" "solr-leader-oom" {
   alarm_name          = "Solr-${local.lb_name}-MemoryThreshold"
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "10"
+  evaluation_periods  = "1"
   namespace           = "ECS/ContainerInsights"
   metric_name         = "MemoryUtilized"
   statistic           = "Average"
-  period              = "60"
+  period              = "600"
   threshold           = "25000"
-  datapoints_to_alarm = "10"
+  datapoints_to_alarm = "1"
   alarm_description   = "This metric monitors solr memory consumption"
 
   dimensions = {
@@ -37,13 +37,13 @@ resource "aws_cloudwatch_metric_alarm" "solr-follower-oom" {
   count               = var.solrFollowerCount
   alarm_name          = "Solr-${local.lb_name}-Follower-${count.index}-MemoryThreshold"
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "10"
+  evaluation_periods  = "1"
   namespace           = "ECS/ContainerInsights"
   metric_name         = "MemoryUtilized"
   statistic           = "Average"
-  period              = "60"
+  period              = "600"
   threshold           = "25000"
-  datapoints_to_alarm = "10"
+  datapoints_to_alarm = "1"
   alarm_description   = "This metric monitors solr memory consumption"
 
   dimensions = {
