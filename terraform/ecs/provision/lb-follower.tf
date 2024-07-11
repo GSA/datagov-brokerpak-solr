@@ -52,6 +52,10 @@ resource "aws_lb_listener" "https_response-follower" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.solr-follower-target[count.index].id
   }
+
+  depends_on = [
+    time_sleep.cert_validate
+  ]
 }
 
 resource "aws_lb_target_group" "solr-follower-target" {
@@ -96,6 +100,10 @@ resource "aws_lb_listener" "https_response-follower-individual" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.solr-follower-individual-target[count.index].id
   }
+
+  depends_on = [
+    time_sleep.cert_validate
+  ]
 }
 
 

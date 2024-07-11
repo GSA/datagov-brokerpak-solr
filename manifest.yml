@@ -34,6 +34,9 @@ terraform_binaries:
 - name: terraform-provider-template
   version: 2.2.0
   source: https://releases.hashicorp.com/terraform-provider-template/2.2.0/terraform-provider-template_2.2.0_linux_amd64.zip
+- name: terraform-provider-time
+  version: 0.8.0
+  source: https://releases.hashicorp.com/terraform-provider-time/0.8.0/terraform-provider-time_0.8.0_linux_amd64.zip
 
 service_definitions:
 - solr-cloud.yml

@@ -49,6 +49,10 @@ resource "aws_lb_listener" "https_response" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.solr-target.id
   }
+
+  depends_on = [
+    time_sleep.cert_validate
+  ]
 }
 
 resource "aws_lb_target_group" "solr-target" {
