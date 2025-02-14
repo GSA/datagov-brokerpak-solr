@@ -90,7 +90,7 @@ resource "local_file" "app" {
 
 resource "local_file" "app_no_slack" {
   count = var.slackNotification ? 0 : 1
-  content  = replace(local.app_template, "notifySlack(message_json, service_dimensions['ClusterName'], service_dimensions['ServiceName'])", "")
+  content  = replace(local.app_template, "notifySlack(message_json, service_dimensions['ClusterName'], service_dimensions['ServiceName'])", "pass")
   filename = "${path.module}/app.py"
 }
 
